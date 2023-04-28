@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+
+import rich_click as click
+from rich_click.cli import patch
+
+from cli import (
+    login, show_info, show_account, list_orgs, list_projects,
+    list_databases, list_collections, list_keys, list_platforms,
+    get_collection, create_org, create_project, create_database, create_key,
+    create_platform, remove_org, remove_project, remove_database, remove_key,
+    switch_org, switch_project, switch_database, create_snapshot,
+    restore_snapshot, migrate_snapshot
+)
+
+patch()
+
+
+@click.group()
+def appwrite():
+    """Appwrite wrapper cli to perform administrative tasks"""
+
+
+@click.group()
+def _list():
+    """List org, project, key, db, collection etc;"""
+
+
+@click.group()
+def get():
+    """Get a specific org, project, key, db, collection etc; details"""
+
+
+@click.group()
+def create():
+    """Create a new org, project, key, db, collection etc;"""
+
+
+@click.group()
+def remove():
+    """Remove org, project, key, db, collection etc;"""
+
+
+@click.group()
+def show():
+    """View summary/information of the current context"""
+
+
+@click.group()
+def switch():
+    """Switch the default org/project/database"""
+
+
+@click.group()
+def snapshot():
+    """Create/restore/migrate snapshots"""
+
+
+# appwrite commands
+appwrite.add_command(login)
+appwrite.add_command(_list, name="list")
+appwrite.add_command(get)
+appwrite.add_command(create)
+appwrite.add_command(remove, name="delete")
+appwrite.add_command(show)
+appwrite.add_command(switch)
+appwrite.add_command(snapshot)
+
+# show commands
+# show.add_command(show_account, name="account")
+# show.add_command(show_info, name="info")
+
+# list commands
+_list.add_command(show_info, name="all")
+_list.add_command(show_account, name="account")
+
+_list.add_command(list_orgs, name="orgs")
+_list.add_command(list_projects, name="projects")
+_list.add_command(list_databases, name="databases")
+_list.add_command(list_collections, name="collections")
+_list.add_command(list_keys, name="keys")
+_list.add_command(list_platforms, name="platforms")
+
+# get commands
+get.add_command(get_collection, name="collection")
+
+# create commands
+create.add_command(create_org, name="org")
+create.add_command(create_project, name="project")
+create.add_command(create_database, name="database")
+create.add_command(create_key, name="key")
+create.add_command(create_platform, name="platform")
+
+# remove commands
+remove.add_command(remove_org, name="org")
+remove.add_command(remove_project, name="project")
+remove.add_command(remove_database, name="database")
+remove.add_command(remove_key, name="key")
+
+# switch commands
+switch.add_command(switch_org, name="org")
+switch.add_command(switch_project, name="project")
+switch.add_command(switch_database, name="database")
+
+# snapshot commands
+snapshot.add_command(create_snapshot, name="create")
+snapshot.add_command(restore_snapshot, name="restore")
+snapshot.add_command(migrate_snapshot, name="migrate")
+
+if __name__ == "__main__":
+    appwrite()
