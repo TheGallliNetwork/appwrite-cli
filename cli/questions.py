@@ -113,7 +113,7 @@ create_platform = [
 
 create_provider = [
     iq.List("provider",
-            message="Select the O=oauth provider",
+            message="Select the Oauth provider",
             choices=[
                 ("Google", "google"),
                 ("Facebook", "facebook"),
@@ -145,3 +145,26 @@ def confirm_delete(resource_type, resource_name, message=None):
                            or "Are you sure you want to remove the {} [{}]".format(
                        resource_type, resource_name))
     ]
+
+
+create_function = [
+    iq.Text("name",
+            message="Name of your function"),
+    iq.List("execute",
+            message="Select who has execution permissions",
+            default="users",
+            choices=[
+                ("None", ""),
+                ("Any", "any"),
+                ("Guests", "guests"),
+                ("All Users", "users"),
+            ]),
+    iq.List("runtime",
+            message="Select function runtime",
+            default="python-3.10",
+            choices=[
+                ("Python", "python-3.10"),
+                ("Node JS", "node-16.0"),
+                ("PHP", "php-8.0"),
+            ]),
+]

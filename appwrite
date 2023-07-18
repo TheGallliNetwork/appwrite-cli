@@ -9,7 +9,8 @@ from cli import (
     get_collection, create_org, create_project, create_database, create_key,
     create_platform, remove_org, remove_project, remove_database, remove_key,
     switch_org, switch_project, switch_database, create_snapshot,
-    restore_snapshot, migrate_snapshot
+    restore_snapshot, migrate_snapshot,
+    list_functions, create_function
 )
 
 patch()
@@ -66,8 +67,8 @@ appwrite.add_command(switch)
 appwrite.add_command(snapshot)
 
 # show commands
-# show.add_command(show_account, name="account")
-# show.add_command(show_info, name="info")
+show.add_command(show_account, name="account")
+show.add_command(show_info, name="info")
 
 # list commands
 _list.add_command(show_info, name="all")
@@ -79,6 +80,7 @@ _list.add_command(list_databases, name="databases")
 _list.add_command(list_collections, name="collections")
 _list.add_command(list_keys, name="keys")
 _list.add_command(list_platforms, name="platforms")
+_list.add_command(list_functions, name="functions")
 
 # get commands
 get.add_command(get_collection, name="collection")
@@ -89,6 +91,7 @@ create.add_command(create_project, name="project")
 create.add_command(create_database, name="database")
 create.add_command(create_key, name="key")
 create.add_command(create_platform, name="platform")
+create.add_command(create_function, name="function")
 
 # remove commands
 remove.add_command(remove_org, name="org")
@@ -105,6 +108,7 @@ switch.add_command(switch_database, name="database")
 snapshot.add_command(create_snapshot, name="create")
 snapshot.add_command(restore_snapshot, name="restore")
 snapshot.add_command(migrate_snapshot, name="migrate")
+
 
 if __name__ == "__main__":
     appwrite()

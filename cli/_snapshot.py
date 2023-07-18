@@ -11,6 +11,8 @@ import client
 from cli._org import with_default_org
 from cli._project import with_default_project
 
+from cli.snapshots.utils.write import write_snapshots
+
 
 @click.command()
 @click.option("--dry-run", is_flag=True, default=False,
@@ -26,7 +28,7 @@ def create_snapshot(dry_run, org=None, project=None):
         task = progress.add_task(f"Creating snapshot of {org['name']}",
                                  total=5)
         progress.console.print(
-            f"Backing up {org['name']} \[org] & {project['name']} \[project]"
+            f"Reading {org['name']} \[org] & {project['name']} \[project]"
         )
         snapshot = {
             "org": org,
@@ -34,25 +36,25 @@ def create_snapshot(dry_run, org=None, project=None):
         }
         progress.advance(task)
 
-        progress.console.print("Backing up API Keys")
+        progress.console.print("Reading API Keys")
         snapshot["keys"] = client.list_api_keys(project["$id"])
         progress.advance(task)
 
-        progress.console.print("Backing up Web/Mobile app Platforms")
+        progress.console.print("Reading Web/Mobile app Platforms")
         snapshot["platforms"] = client.list_platforms(project["$id"])
         progress.advance(task)
 
-        progress.console.print("Backing up Oauth Providers")
+        progress.console.print("Reading Oauth Providers")
         snapshot["providers"] = list(filter(lambda x: x["enabled"],
                                             project.get("providers", [])))
         progress.advance(task)
 
-        progress.console.print("Backing up Databases")
+        progress.console.print("Reading Databases")
         databases = client.list_databases(project["$id"])
         dbs = {}
 
         for db in databases:
-            progress.console.print(f"    Backing up: {db['name']}")
+            progress.console.print(f"    Reading: {db['name']}")
             dbs[db["$id"]] = {
                 "db": db,
                 "collections": client.list_collections(project["$id"],
@@ -61,14 +63,15 @@ def create_snapshot(dry_run, org=None, project=None):
 
         snapshot["databases"] = dbs
         progress.advance(task)
+        progress.stop()
 
         if dry_run:
             inspect(snapshot)
             return
 
-        file_name = f"{datetime.now().isoformat()}.snapshot"
-        with open(file_name, "w+") as f:
-            json.dump(snapshot, f)
+        write_snapshots(snapshot)
+
+
 
 
 @click.command()

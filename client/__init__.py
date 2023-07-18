@@ -22,3 +22,6 @@ from client._collections import (
 from client._oauth import (
     create_or_update_oauth
 )
+from client._functions import (
+    list_functions, create_function
+)

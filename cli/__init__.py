@@ -10,6 +10,9 @@ from ._database import (
     with_default_database, list_databases, create_database, remove_database,
     list_collections, get_collection, switch_database
 )
+from ._functions import(
+    list_functions, create_function
+)
 from ._keys import list_keys, create_key, remove_key
 from ._platform import list_platforms, create_platform, remove_platform
 from ._snapshot import create_snapshot, restore_snapshot, migrate_snapshot

@@ -153,9 +153,11 @@ def list_collections(project=None, database=None, limit=None, offset=None,
 
 @click.command()
 @click.option("--name", "-n", help="Name of the collection")
+@click.option("--debug", "-d", default=False, type=bool, is_flag=True,
+              help="Print debug information")
 @with_default_project
 @with_default_database
-def get_collection(project=None, database=None, name=None):
+def get_collection(project=None, database=None, name=None, debug=False):
     _collection = select_collection(name=name)
 
     if not _collection:
@@ -165,7 +167,9 @@ def get_collection(project=None, database=None, name=None):
                                        _collection["$id"])
 
     print_table([collection])
-    inspect(collection)
+
+    if debug:
+        inspect(collection)
 
     click.echo(click.style("\nAttributes", underline=True, fg="blue"))
     print_table(
