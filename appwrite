@@ -10,7 +10,8 @@ from cli import (
     create_platform, remove_org, remove_project, remove_database, remove_key,
     switch_org, switch_project, switch_database, create_snapshot,
     restore_snapshot, migrate_snapshot,
-    list_functions, create_function
+    list_functions, create_function, remove_function,
+    list_deployments, create_deployment
 )
 
 patch()
@@ -81,6 +82,7 @@ _list.add_command(list_collections, name="collections")
 _list.add_command(list_keys, name="keys")
 _list.add_command(list_platforms, name="platforms")
 _list.add_command(list_functions, name="functions")
+_list.add_command(list_deployments, name="deployments")
 
 # get commands
 get.add_command(get_collection, name="collection")
@@ -92,12 +94,14 @@ create.add_command(create_database, name="database")
 create.add_command(create_key, name="key")
 create.add_command(create_platform, name="platform")
 create.add_command(create_function, name="function")
+create.add_command(create_deployment, name="deployment")
 
 # remove commands
 remove.add_command(remove_org, name="org")
 remove.add_command(remove_project, name="project")
 remove.add_command(remove_database, name="database")
 remove.add_command(remove_key, name="key")
+remove.add_command(remove_function, name="function")
 
 # switch commands
 switch.add_command(switch_org, name="org")

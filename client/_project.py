@@ -28,7 +28,7 @@ def create_project(org_id, name, project_id=None):
         "region": "default"
     }
 
-    make_request(requests.post, endpoint, body=body)
+    return make_request(requests.post, endpoint, body=body)
 
 
 def update_project_name(project_id, name):

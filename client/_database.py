@@ -37,7 +37,7 @@ def create_database(project_id, name, database_id=None):
         "databaseId": database_id or "unique()"
     }
 
-    make_request(requests.post, endpoint, body=body, project=project_id)
+    return make_request(requests.post, endpoint, body=body, project=project_id)
 
 
 def remove_database(project_id, db_id):

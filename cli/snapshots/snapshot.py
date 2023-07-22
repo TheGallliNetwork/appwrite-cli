@@ -10,16 +10,16 @@ Key = str
 
 class Snapshot:
     def backup(self, **kwargs) -> Data:
-        """Return the value to backup in the snapshot"""
+        """Return the data to backup in the snapshot"""
 
     def restore(self, value: Data, **kwargs) -> None:
-        """Restore the value by overriding the existing content"""
+        """Restore the data by overriding the existing content"""
 
     def cleanup(self, value: Data) -> None:
         """Clean up the previous operation"""
 
     def migrate(self, value: Data, **kwargs) -> None:
-        """Migrate the value"""
+        """Migrate the data"""
 
 
 class OrgSnapshot(Snapshot):

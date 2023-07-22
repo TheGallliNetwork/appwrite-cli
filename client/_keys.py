@@ -22,7 +22,7 @@ def create_api_key(project_id, name, scopes, expire=None):
     body = {
         "name": name,
         "scopes": scopes,
-        "expire": expire
+        "expire": expire or None
     }
 
     return make_request(requests.post, endpoint, body=body)

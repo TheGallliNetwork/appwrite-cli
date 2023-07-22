@@ -24,7 +24,7 @@ APPWRITE_HEADERS = {
 }
 
 
-def make_request(method, endpoint, body=None, project=None):
+def make_request(method, endpoint, body=None, project=None, files=None):
     try:
         with open(".session", "rb") as f:
             cookies = pickle.load(f)
@@ -37,12 +37,17 @@ def make_request(method, endpoint, body=None, project=None):
 
     headers = dict(**APPWRITE_HEADERS)
 
+    if files:
+        headers["Content-Transfer-Encoding"] = "application/gzip"
+
     if project:
         headers["x-appwrite-project"] = project
         headers["x-appwrite-mode"] = "admin"
 
     response = method(endpoint,
-                      json=body,
+                      json=body if files is None else None,
+                      data=body if files is not None else None,
+                      files=files,
                       headers=headers,
                       cookies=cookies)
 
