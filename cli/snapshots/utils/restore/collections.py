@@ -6,7 +6,7 @@ from time import sleep
 
 import client
 from cli import log
-from cli.snapshots.utils.restore.utils import data_from_dir
+from cli.snapshots.utils.restore.utils import data_from_dir, set_env
 from exceptions import BadRequest
 
 
@@ -66,7 +66,8 @@ def _delete_indexes(collection, indexes, database_id, project_id):
         )
 
 
-def _sync_collection(data, database_id, project_id, relationships=None):
+@set_env("COLLECTION_{name}_ID", "$id", dynamic_key=True)
+def _sync_collection(data, database_id, project_id, relationships=None, env=None):
     collections = client.list_collections(project_id, database_id)
     c_name = data["name"]
     c_id = data["$id"]
@@ -224,7 +225,8 @@ def restore_collections(data=None, env=None, **kwargs):
         c["databaseId"] = db_id
 
         synced = _sync_collection(c, db_id, project_id,
-                                  relationships=relationships)
+                                  relationships=relationships,
+                                  env=env)
         collection_id_map[c["$id"]] = {
             "$id": synced["$id"],
             "name": synced["name"]
