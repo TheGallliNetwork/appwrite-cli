@@ -18,8 +18,8 @@ def create_api_key(project_id, key, env):
     env[_key.get("name")] = _key.get("secret")
 
 
-def regenerate_key(project_id, key, env):
-    client.remove_api_key(project_id, key["$id"])
+def regenerate_key(project_id, existing, key, env):
+    client.remove_api_key(project_id, existing["$id"])
     create_api_key(project_id, key, env)
 
 
@@ -47,14 +47,14 @@ def restore_api_keys(data=None, env=None, **kwargs):
                 if _diff[jd.update]:
                     log.success(f"[CHANGE] Regenerating key [{key['name']}]",
                                 indent=4)
-                    regenerate_key(project_id, key, env)
+                    regenerate_key(project_id, existing[0], key, env)
                 else:
                     _diff.pop(jd.update, None)
 
             if _diff:
                 log.success(f"[CHANGE] Regenerating key [{key['name']}]",
                             indent=4)
-                regenerate_key(project_id, key, env)
+                regenerate_key(project_id, existing[0], key, env)
             else:
                 env[existing[0].get("name")] = existing[0].get("secret")
         else:
