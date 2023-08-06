@@ -8,8 +8,8 @@ from appw.cli import (
     list_databases, list_collections, list_keys, list_platforms,
     get_collection, create_org, create_project, create_database, create_key,
     create_platform, remove_org, remove_project, remove_database, remove_key,
-    switch_org, switch_project, switch_database, create_snapshot,
-    restore_snapshot, migrate_snapshot,
+    switch_org, switch_project, switch_database,
+    create_snapshot, restore_snapshot,
     list_functions, create_function, remove_function,
     list_deployments, create_deployment
 )
@@ -111,7 +111,7 @@ switch.add_command(switch_database, name="database")
 # snapshot commands
 snapshot.add_command(create_snapshot, name="create")
 snapshot.add_command(restore_snapshot, name="restore")
-snapshot.add_command(migrate_snapshot, name="migrate")
+# snapshot.add_command(migrate_snapshot, name="migrate")
 
 
 if __name__ == "__main__":

@@ -24,9 +24,8 @@ from appw.cli.snapshots.utils.write import write_snapshots
 @with_default_org
 @with_default_project
 def create_snapshot(dry_run, org=None, project=None):
-    """Creates a snapshot of the project and everything under it.
-    [yellow]NOTE: This doesn't backup the data from the database, just the
-    schema
+    """
+    Creates a snapshot of the project and everything under it.
     """
     with Progress() as progress:
         task = progress.add_task(f"Creating snapshot of {org['name']}",
@@ -131,6 +130,6 @@ def restore_snapshot():
     print()
 
 
-@click.command()
-def migrate_snapshot():
-    pass
+# @click.command()
+# def migrate_snapshot():
+#     pass
