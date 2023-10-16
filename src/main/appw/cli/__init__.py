@@ -8,7 +8,7 @@ from ._project import (
 )
 from ._database import (
     with_default_database, list_databases, create_database, remove_database,
-    list_collections, get_collection, switch_database
+    list_collections, get_collection, switch_database, list_documents, remove_documents
 )
 from ._functions import (
     list_functions, create_function, remove_function,
@@ -27,4 +27,4 @@ __all__ = ["login", "with_default_org", "list_orgs", "create_org", "switch_org",
            "switch_database", "list_functions", "create_function", "remove_function", "list_deployments",
            "create_deployment", "list_keys", "create_key", "remove_key", "list_platforms", "create_platform",
            "remove_platform", "create_snapshot", "restore_snapshot", "show_info", "show_account",
-           "create_oauth", "questions"]
+           "create_oauth", "questions", "list_documents", "remove_documents"]

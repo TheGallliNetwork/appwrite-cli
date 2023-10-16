@@ -110,14 +110,18 @@ def print_table(data, title=None, keys=None, resolvers=None):
 def prompt_delete(resource_name, select_from_list_method, remove_method,
                   on_remove_callback=None):
     resource = select_from_list_method()
-
+    if "name" in resource:
+        r_id = f"{resource['name']}"
+    else:
+        r_id = ""
+    if "$id" in resource:
+        r_id += f": {resource['$id']}"
     confirm_delete = iq.prompt(
         questions.confirm_delete(
             resource_name,
             resource["$id"],
-            message=click.style(f"Remove {resource_name}: {resource['name']}",
+            message=click.style(f"Remove {resource_name}: {r_id}",
                                 fg="red")))
-
     if not confirm_delete["confirm"]:
         click.echo(click.style("[No] Discarded operation", dim=True))
     else:

@@ -131,10 +131,20 @@ def select_from_list(items, message=None, id_attr=None):
     return [
         iq.List("id",
                 choices=list(
-                    map(lambda x: (x.get("name"), x.get(id_attr or "$id")),
+                    map(lambda x: (x.get('name'), x.get(id_attr or "$id")),
                         items)),
                 message=message or "Select from the list")
     ]
+
+
+def select_multiple_from_list(items, message=None, id_attr=None):
+    return [iq.Checkbox("id",
+                        choices=list(
+                            map(lambda x: (
+                            f"{x.get('name')}: {x.get(id_attr or '$id')}",
+                            x.get(id_attr or "$id")),
+                                items)),
+                        message=message or "Select from the list")]
 
 
 def confirm_delete(resource_type, resource_name, message=None):
