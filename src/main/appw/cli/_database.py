@@ -1,3 +1,5 @@
+import functools
+
 from rich import inspect
 
 from appw import client
@@ -191,3 +193,140 @@ def get_collection(project=None, database=None, name=None, debug=False):
     click.echo(", ".join(collection.get("$permissions", [])))
 
     print("\n")
+
+
+@click.command()
+@click.option("--db-id", default=None, type=str,
+              help="Optional Database ID")
+@click.option("--collection-id", default=None, type=str,
+              help="Optional Collection ID")
+@click.option("--limit", default=None, type=int,
+              help="Number of databases to load")
+@click.option("--offset", default=None, type=int,
+              help="The offset from which to load the databases")
+@click.option("--columns", default=None, type=str, multiple=True,
+              help="Columns to show")
+@click.option("--search", default=None, nargs=2, type=str,
+              help="Search full text indexed attributes")
+@with_default_project
+@with_default_database
+def list_documents(project=None, database=None, limit=None, offset=None,
+                   db_id=None, collection_id=None, columns=None, search=None):
+    project_id = project["$id"]
+    if db_id:
+        database = client.get_database(project_id, db_id)
+
+    if not collection_id:
+        collection = select_collection()
+    else:
+        collection = client.get_collection(project_id,
+                                           db_id or database["$id"],
+                                           collection_id)
+
+    documents = client.list_documents(project["$id"],
+                                      db_id or database["$id"],
+                                      collection["$id"],
+                                      limit=limit,
+                                      offset=offset,
+                                      search=search
+                                      )
+    if documents is not None:
+        print_table(
+            documents,
+            title=f"Documents under {database['name']} - {collection['name']}",
+            keys=columns
+            # keys=["$id", "name"]
+        )
+
+
+@click.command()
+@click.option("--collection-id", default=None, type=str,
+              help="Optional Collection ID")
+@click.option("--db-id", default=None, type=str,
+              help="Optional Database ID")
+@click.option("--collection-id", default=None, type=str,
+              help="Optional Collection ID")
+@click.option("--doc-id", default=None, type=str,
+              help="Optional Document ID")
+@click.option("--search", default=None, nargs=2, type=str,
+              help="Search full text indexed attributes")
+@click.option("--truncate", default=False, is_flag=True,
+              help="Delete all documents from the collection")
+@with_default_project
+@with_default_database
+def remove_documents(project=None, database=None,
+                     db_id=None, collection_id=None, doc_id=None,
+                     search=None, truncate=False):
+    project_id = project["$id"]
+    if db_id:
+        database = client.get_database(project_id, db_id)
+    if not collection_id:
+        collection = select_collection()
+    else:
+        try:
+            collection = client.get_collection(project_id, db_id or database["$id"], collection_id)
+        except BadRequest as e:
+            click.secho(f"{e} '{collection_id}'", fg="red")
+            return
+
+    if not doc_id:
+        documents = client.list_documents(project["$id"],
+                                          db_id or database["$id"],
+                                          collection["$id"],
+                                          search=search
+                                          )
+    else:
+        try:
+            document = client.get_document(project_id, db_id or database["$id"], collection["$id"], doc_id)
+        except BadRequest as e:
+            click.secho(f"{e} '{doc_id}'", fg="red")
+            return
+        documents = [document]
+    if documents:
+        if not truncate:
+            selected_documents = iq.prompt(
+                questions.select_multiple_from_list(documents,
+                                                    message="Select a document")
+            )
+            selected_documents = [d for d in documents if d["$id"] in selected_documents["id"]]
+            _p = functools.partial(client.remove_document,
+                                   project_id=project_id,
+                                   database_id=db_id or database["$id"],
+                                   collection_id=collection["$id"])
+            for doc in selected_documents:
+                prompt_delete("Document", lambda: doc,
+                              lambda doc_id: _p(document_id=doc_id))
+        else:
+            confirm = iq.prompt(
+                [
+                    iq.Confirm(
+                        "confirm",
+                        default=False,
+                        message=f"Are you sure you want to remove all "
+                                f" documents [{len(documents)}] from "
+                                f"{collection['$id']}"
+                    )
+                ]
+            )
+            if confirm["confirm"]:
+                for doc in documents:
+                    if "name" in doc:
+                        r_id = f"{doc['name']}"
+                    else:
+                        r_id = ""
+                    if "$id" in doc:
+                        r_id += f": {doc['$id']}"
+                    click.secho(f"[Yes] Deleting {r_id}")
+                    client.remove_document(
+                        project_id=project_id,
+                        database_id=db_id or database["$id"],
+                        collection_id=collection["$id"],
+                        document_id=doc["$id"]
+                    )
+            else:
+                click.secho("[No] Discarded operation", dim=True)
+    else:
+        click.secho("Unable to find documents with given 'id' or "
+                    "'search criteria'", fg="yellow")
+
+

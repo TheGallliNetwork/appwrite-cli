@@ -32,6 +32,9 @@ from ._functions import (
     list_function_variables, create_function_variable,
     update_function_variable, remove_function_variable
 )
+from ._documents import (
+    list_documents, get_document, create_document, update_document, remove_document
+)
 
 __all__ = ["login", "get_account", "list_organizations", "create_organization", "update_organization",
            "remove_organization", "list_projects", "get_project", "create_project", "update_project_name",
@@ -42,4 +45,4 @@ __all__ = ["login", "get_account", "list_organizations", "create_organization", 
            "create_index", "remove_index", "create_relationship", "create_or_update_oauth", "list_functions",
            "get_function", "create_function", "update_function", "remove_function", "list_deployments",
            "create_deployment", "list_function_variables", "create_function_variable", "update_function_variable",
-           "remove_function_variable"]
+           "remove_function_variable", "list_documents", "get_document", "create_document", "remove_document", "update_document"]

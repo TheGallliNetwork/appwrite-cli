@@ -11,7 +11,7 @@ from appw.cli import (
     switch_org, switch_project, switch_database,
     create_snapshot, restore_snapshot,
     list_functions, create_function, remove_function,
-    list_deployments, create_deployment
+    list_deployments, create_deployment, list_documents, remove_documents
 )
 
 patch()
@@ -83,6 +83,7 @@ _list.add_command(list_keys, name="keys")
 _list.add_command(list_platforms, name="platforms")
 _list.add_command(list_functions, name="functions")
 _list.add_command(list_deployments, name="deployments")
+_list.add_command(list_documents, name="documents")
 
 # get commands
 get.add_command(get_collection, name="collection")
@@ -102,6 +103,7 @@ remove.add_command(remove_project, name="project")
 remove.add_command(remove_database, name="database")
 remove.add_command(remove_key, name="key")
 remove.add_command(remove_function, name="function")
+remove.add_command(remove_documents, name="documents")
 
 # switch commands
 switch.add_command(switch_org, name="org")
