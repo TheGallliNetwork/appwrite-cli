@@ -111,3 +111,7 @@ class PlatformsSnapshot(Snapshot):
             client.create_platform(project["$id"], name=p["name"],
                                    type=p["type"],
                                    key=p.get("hostname") or p.get("key"))
+
+
+class StorageSnapshot(Snapshot):
+    pass

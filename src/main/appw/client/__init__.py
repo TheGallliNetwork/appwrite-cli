@@ -36,6 +36,10 @@ from ._documents import (
     list_documents, get_document, create_document, update_document, remove_document
 )
 
+from ._storage import (
+    list_buckets
+)
+
 __all__ = ["login", "get_account", "list_organizations", "create_organization", "update_organization",
            "remove_organization", "list_projects", "get_project", "create_project", "update_project_name",
            "remove_project", "list_api_keys", "create_api_key", "remove_api_key", "list_platforms", "create_platform",
@@ -45,4 +49,6 @@ __all__ = ["login", "get_account", "list_organizations", "create_organization", 
            "create_index", "remove_index", "create_relationship", "create_or_update_oauth", "list_functions",
            "get_function", "create_function", "update_function", "remove_function", "list_deployments",
            "create_deployment", "list_function_variables", "create_function_variable", "update_function_variable",
-           "remove_function_variable", "list_documents", "get_document", "create_document", "remove_document", "update_document"]
+           "remove_function_variable", "list_documents", "get_document", "create_document", "remove_document",
+           "update_document",
+           "list_buckets",]
