@@ -29,7 +29,7 @@ def create_snapshot(dry_run, org=None, project=None):
     """
     with Progress() as progress:
         task = progress.add_task(f"Creating snapshot of {org['name']}",
-                                 total=6)
+                                 total=7)
         progress.console.print(
             f"Reading {org['name']} [org] & {project['name']} [project]"
         )
@@ -72,8 +72,16 @@ def create_snapshot(dry_run, org=None, project=None):
         progress.advance(task)
 
         # functions
+        progress.console.print("Reading Functions")
         functions = client.list_functions(project["$id"])
         snapshot["functions"] = functions
+
+        progress.advance(task)
+
+        # storage/buckets
+        progress.console.print("Reading Storage Buckets")
+        buckets = client.list_buckets(project["$id"])
+        snapshot["buckets"] = buckets
 
         progress.advance(task)
 

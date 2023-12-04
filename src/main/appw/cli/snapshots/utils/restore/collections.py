@@ -1,5 +1,5 @@
 """
-Copyright (c) 2020 by The Gallli  Network
+Copyright (c) 2023 by The Gallli  Network
 All rights reserved.
 """
 from time import sleep

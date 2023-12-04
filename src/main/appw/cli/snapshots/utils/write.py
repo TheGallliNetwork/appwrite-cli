@@ -10,6 +10,7 @@ def write_snapshots(snapshot):
         snapshot.get("project", {}).get("providers", []))
     _write_db_snapshots(snapshot.get("databases", []))
     _write_function_snapshots(snapshot.get("functions", []))
+    _write_bucket_snapshots(snapshot.get("buckets", []))
 
 
 def _write_project_snapshots(org, project):
@@ -97,3 +98,11 @@ def _write_function_snapshots(functions):
         with open(file_name, "w+") as f:
             log.info(f"✅ [Snapshot] Function: {fn['name']} [{fn['$id']}]")
             json.dump(fn, f, indent=4)
+
+
+def _write_bucket_snapshots(buckets):
+    file_root = "snapshot-templates"
+
+    with open(f"{file_root}/buckets.json", "w+") as f:
+        log.info("✅ [Snapshot] Storage Buckets")
+        json.dump(buckets, f, indent=4)

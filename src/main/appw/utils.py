@@ -32,7 +32,7 @@ def make_request(method, endpoint, body=None, project=None, files=None):
         click.echo(
             click.style("Login to create a session by running", dim=True))
         click.echo(
-            click.style("./appwrite login", fg="green"))
+            click.style("appw login", fg="green"))
         exit(0)
 
     headers = dict(**APPWRITE_HEADERS)
@@ -55,7 +55,7 @@ def make_request(method, endpoint, body=None, project=None, files=None):
         click.echo(
             click.style("Login to create a session by running", dim=True))
         click.echo(
-            click.style("./appwrite login", fg="green"))
+            click.style("appw login", fg="green"))
         exit(0)
         # raise UnauthenticatedError("[{}] {}".format(
         #     response.status_code,
