@@ -8,6 +8,7 @@ def write_snapshots(snapshot):
     _write_keys_snapshots(snapshot.get("project", {}).get("keys", []))
     _write_providers_snapshots(
         snapshot.get("project", {}).get("providers", []))
+    _write_platforms_snapshots(snapshot.get("platforms", []))
     _write_db_snapshots(snapshot.get("databases", []))
     _write_function_snapshots(snapshot.get("functions", []))
     _write_bucket_snapshots(snapshot.get("buckets", []))
@@ -52,6 +53,14 @@ def _write_providers_snapshots(providers):
     with open(f"{file_root}/providers.json", "w+") as f:
         log.info("✅ [Snapshot] Auth Providers")
         json.dump(_providers, f, indent=4)
+
+
+def _write_platforms_snapshots(platforms):
+    file_root = "snapshot-templates"
+
+    with open(f"{file_root}/platforms.json", "w+") as f:
+        log.info("✅ [Snapshot] Platforms")
+        json.dump(platforms, f, indent=4)
 
 
 def _write_db_snapshots(dbs):
