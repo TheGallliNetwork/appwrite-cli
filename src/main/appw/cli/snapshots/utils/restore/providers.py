@@ -13,7 +13,19 @@ def restore_auth_providers(data=None, env=None):
 
     log.dim("Syncing auth providers")
 
+    project = client.get_project(project_id)
+    existing = list(
+        map(
+            lambda x: x["name"],
+            filter(lambda x: x["enabled"], project.get("providers", []))
+        )
+    )
+
     for provider in data:
+        if provider["name"] in existing:
+            log.dim(f"[SKIP] {provider['name']} exists", indent=4)
+            continue
+
         log.success(f"[SYNC] {provider['name']}", indent=4)
         client.create_or_update_oauth(
             project_id,
