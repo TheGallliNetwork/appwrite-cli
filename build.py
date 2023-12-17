@@ -13,7 +13,7 @@ summary = "An alternative CLI wrapper on top of Appwrite API with support " \
           "for creating & restoring snapshots to easily reproduce dev. " \
           "environments."
 default_task = "publish"
-version = "0.0.2.dev0"
+version = "0.0.2"
 author = "The Gallli Network"
 author_email = "support@gallistats.com"
 license = "MIT"
