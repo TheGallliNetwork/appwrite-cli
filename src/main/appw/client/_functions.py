@@ -103,10 +103,10 @@ def create_deployment(project_id, function_id, entrypoint, code_path,
     # with tempfile.TemporaryFile(suffix='.tar.gz', mode="wb") as f:
     try:
         tar = tarfile.open(f"{fname}.tar.gz", mode='w:gz')
-        tar.add(code_path)
+        tar.add(code_path, arcname=fname)
         tar.close()
 
-        tar = open(f"{fname}.tgz", mode="rb")
+        tar = open(f"{fname}.tar.gz", mode="rb")
 
         files = {
             "code": (f"{fname}.tar.gz", tar, 'application/octet-stream')
@@ -121,7 +121,8 @@ def create_deployment(project_id, function_id, entrypoint, code_path,
         make_request(
             requests.post, endpoint, body=body, project=project_id, files=files
         )
-    except:
+    except Exception as e:
+        print(e)
         if tar:
             tar.close()
 
