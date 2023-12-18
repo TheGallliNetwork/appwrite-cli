@@ -141,8 +141,8 @@ def select_multiple_from_list(items, message=None, id_attr=None):
     return [iq.Checkbox("id",
                         choices=list(
                             map(lambda x: (
-                            f"{x.get('name')}: {x.get(id_attr or '$id')}",
-                            x.get(id_attr or "$id")),
+                                f"{x.get('name')}: {x.get(id_attr or '$id')}",
+                                x.get(id_attr or "$id")),
                                 items)),
                         message=message or "Select from the list")]
 
@@ -177,4 +177,11 @@ create_function = [
                 ("Node JS", "node-16.0"),
                 ("PHP", "php-8.0"),
             ]),
+    iq.Text("entrypoint",
+            message="Entry point file path of your function",
+            default="src/index.py"),
+    iq.Confirm("logging",
+               message="Enable logging",
+               default=False),
+
 ]

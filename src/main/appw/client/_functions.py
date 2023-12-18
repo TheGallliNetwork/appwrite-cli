@@ -33,17 +33,33 @@ def get_function(project_id, f_id):
 
 def create_function(project_id, name, execute, enabled=True, function_id=None,
                     runtime="python-3.10", events=None, schedule=None,
-                    timeout=None, **kwargs):
+                    timeout=None, commands=None, entrypoint=None, logging=False,
+                    **kwargs):
     endpoint = f"{APPWRITE_ENDPOINT}/v1/functions"
+
+    if not commands:
+        if "python" in runtime:
+            commands = "pip install -r requirements.txt"
+        elif "node" in runtime:
+            commands = "npm install"
+
+    if not execute:
+        execute = []
+    elif execute and not isinstance(execute, list):
+        execute = [execute]
+
     body = {
         "name": name,
         "functionId": function_id or "unique()",
-        "execute": execute if isinstance(execute, list) else [execute],
+        "execute": execute,
         "enabled": enabled,
+        "logging": logging,
         "runtime": runtime,
         "events": events or [],
         "schedule": schedule or "",
-        "timeout": timeout or 15
+        "timeout": timeout or 15,
+        "commands": commands or "",
+        "entrypoint": entrypoint or "",
     }
 
     return make_request(requests.post, endpoint, body=body, project=project_id)
@@ -51,17 +67,32 @@ def create_function(project_id, name, execute, enabled=True, function_id=None,
 
 def update_function(project_id, function_id, name, execute, enabled=True,
                     runtime="python-3.10", events=None, schedule=None,
-                    timeout=None, **kwargs):
+                    timeout=None, commands=None, entrypoint=None, logging=False,
+                    **kwargs):
     endpoint = f"{APPWRITE_ENDPOINT}/v1/functions/{function_id}"
+    if not commands:
+        if "python" in runtime:
+            commands = "pip install -r requirements.txt"
+        elif "node" in runtime:
+            commands = "npm install"
+
+    if not execute:
+        execute = []
+    elif execute and not isinstance(execute, list):
+        execute = [execute]
+
     body = {
         "name": name,
         "functionId": function_id,
-        "execute": execute if isinstance(execute, list) else [execute],
+        "execute": execute,
         "enabled": enabled,
+        "logging": logging,
         "runtime": runtime,
         "events": events or [],
         "schedule": schedule or "",
-        "timeout": timeout or 15
+        "timeout": timeout or 15,
+        "commands": commands or "",
+        "entrypoint": entrypoint or "",
     }
 
     return make_request(requests.put, endpoint, body=body, project=project_id)
