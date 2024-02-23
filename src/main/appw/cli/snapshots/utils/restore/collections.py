@@ -203,7 +203,8 @@ def _sync_relationships(collection_id_map, project_id, relationships):
                     rel["relationType"],
                     two_way=rel.get("twoWay"),
                     two_way_key=rel.get("twoWayKey"),
-                    on_delete=rel.get("onDelete")
+                    on_delete=rel.get("onDelete"),
+                    side=rel.get("side", None),
                 )
                 sleep(0.5)
             except BadRequest as e:

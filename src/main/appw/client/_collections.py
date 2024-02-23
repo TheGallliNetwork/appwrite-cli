@@ -139,7 +139,7 @@ def create_attribute(project_id, database_id, collection_id, kind, key,
 
 def create_relationship(project_id, database_id, collection_id, key,
                         related_collection_id, relation_type, two_way=False,
-                        two_way_key=None, on_delete=None):
+                        two_way_key=None, on_delete=None, side=None):
     endpoint = f"{APPWRITE_ENDPOINT}/v1/databases/" \
                f"{database_id}/collections/{collection_id}/" \
                f"attributes/relationship"
@@ -155,6 +155,9 @@ def create_relationship(project_id, database_id, collection_id, key,
 
     if two_way:
         body["twoWayKey"] = two_way_key
+
+    if side:
+        body["side"] = side
 
     return make_request(requests.post, endpoint, body=body, project=project_id)
 
